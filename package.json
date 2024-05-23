@@ -1,7 +1,7 @@
 {
   "name": "adopt-me",
   "version": "1.0.0",
-  "description": "",
+  "description": "learning React project",
   "main": "index.js",
   "scripts": {
     "build": "vite build",
@@ -12,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "Steve Rios",
   "license": "ISC",
   "devDependencies": {
     "@types/react": "^18.3.2",

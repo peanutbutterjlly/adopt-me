@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
-
-const localCache = {};
+import { useQuery } from "@tanstack/react-query";
+import fetchBreedList from "./fetchBreedList";
 
 /**
  * Custom hook that fetches a list of breeds for a given animal and provides the list and status.
@@ -11,36 +10,7 @@ const localCache = {};
  * - `status` (string): The status of the breed list fetching process ('unloaded', 'loading', 'loaded').
  */
 export default function useBreedList(animal) {
-  const [breedList, setBreedList] = useState([]);
-  const [status, setStatus] = useState('unloaded');
+  const results = useQuery(['breeds', animal], fetchBreedList);
 
-
-  useEffect(() => {
-    if (!animal) {
-      setBreedList([]);
-    } else if (localCache[animal]) {
-      setBreedList(localCache[animal]);
-    } else {
-      requestBreedList();
-    }
-
-    /**
-     * Asynchronously requests a list of breeds for a given animal from the server.
-     *
-     * @return {Promise<void>} - A promise that resolves when the breed list is fetched and set.
-     */
-    async function requestBreedList() {
-      setBreedList([]);
-      setStatus('loading');
-      const res = await fetch(
-        `http://pets-v2.dev-apis.com/breeds?animal=${animal}`
-      );
-      const json = await res.json();
-      localCache[animal] = json.breeds || [];
-      setBreedList(localCache[animal]);
-      setStatus('loaded');
-    }
-  }, [animal]);
-
-  return [breedList, status];
+  return [results?.data?.breeds ?? [], results.status]
 }
